@@ -1,7 +1,7 @@
 console.log("Welcome to Harry Potter library");
-
+showNotes();
 /////////////////////////////////////////////////////////////////////////////////////////////
-
+// Random Wallpaper
 // setInterval(function back() {
 //     const randomNumber = Math.floor(Math.random() * 2);
 //     switch (randomNumber) {
@@ -101,6 +101,21 @@ function libraryFormSubmit(e) {
         type = cooking.value;
     }
 
+    let entry = localStorage.getItem('entry');
+
+    if (entry == null) {
+        entryObj = [];
+    }
+    else {
+        entryObj = JSON.parse(entry);
+    }
+
+    if(name.length>=2 && author.length>=2){
+        entryObj.push([name, author, type]);
+    }
+ 
+    localStorage.setItem("entry", JSON.stringify(entryObj));
+
     let book = new Book(name, author, type);
     console.log(book);
 
@@ -115,7 +130,32 @@ function libraryFormSubmit(e) {
         display.show('danger', 'Sorry you cannot add this book');
     }
 
-
-
     e.preventDefault();
+}
+
+
+//Show Notes Function
+function showNotes() {
+
+    let entry = localStorage.getItem('entry');
+
+    if (entry == null) {
+        entryObj = [];
+    }
+    else {
+        entryObj = JSON.parse(entry);
+    }
+
+    html = " ";
+    let tableBody = document.getElementById('tableBody');
+    entryObj.forEach((element)=> {
+        html += `<tr>
+        <td>${element[0]}</td>
+        <td>${element[1]}</td>
+        <td>${element[2]}</td>
+    </tr>`;
+    })
+
+    tableBody.innerHTML=html;
+
 }
